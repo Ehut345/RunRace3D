@@ -6,7 +6,6 @@ using UnityEngine;
 public class AIPlayerController : MonoBehaviour
 {
     CharacterController AIcharacterController;
-
     Vector3 AIplayerMove;
     [SerializeField]
     private float AIspeed;//playerSpeed
@@ -25,10 +24,6 @@ public class AIPlayerController : MonoBehaviour
         AIcharacterController = GetComponent<CharacterController>();
         AIanimator = GetComponentInChildren<Animator>();
     }
-
-    // Start is called before the first frame update
-
-
     // Update is called once per frame
     void Update()
     {
@@ -40,9 +35,7 @@ public class AIPlayerController : MonoBehaviour
         {
             AIwallSlide = false;    
             AIplayerVelocity = 0;
-
             RaycastMethod();
-
             print("Grounded");
             AIanimator.SetBool("Grounded",AIcharacterController.isGrounded);
 
@@ -77,7 +70,6 @@ public class AIPlayerController : MonoBehaviour
         AIcharacterController.Move(AIplayerMove * Time.deltaTime);
 
     }
-
     private void RaycastMethod()
     {
         RaycastHit hit;
@@ -97,32 +89,19 @@ public class AIPlayerController : MonoBehaviour
             print("RayCast");
         }
     }
-
     private void AIJump()
     {
-
-
         AIanimator.SetTrigger("Jump");
         // wallSlide = false;
         print("Jump!");
         AIplayerVelocity = AIplayerJumpForce;
         //doubleJump = true;
         //transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
-
-
     }
-
-
-    
-
-
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-
         if (hit.collider.tag == "Wall")
         {
-
-
             if (AIjump)
             {
                 StartCoroutine(AIJumpDelay(timeDelay));
@@ -136,19 +115,14 @@ public class AIPlayerController : MonoBehaviour
             //}
             //else /*if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))*/ // need to fix the logic according to our game progress
             //{
-
-
-
             //    //jump();
             //    //AIplayerVelocity = AIplayerJumpForce;
             //    //transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
             //    //AIdoubleJump = false;
             //    //AIwallSlide = false;
-
             //}
 
         }
-
         else
         {
             if (transform.forward != hit.collider.transform.right && hit.collider.tag == "Ground" && !AIplayerTurn)
@@ -161,17 +135,14 @@ public class AIPlayerController : MonoBehaviour
 
     IEnumerator AIJumpDelay(float timeDelay)
     {
-        timeDelay = UnityEngine.Random.Range(0.5f,1.0f);
+        timeDelay = UnityEngine.Random.Range(0.5f,0.7f);
         print("Time: " + timeDelay);
         //AIplayerTurn = false;
         AIwallSlide = true;
         AIjump = false;
-
         yield return new WaitForSeconds(timeDelay);
-
         if (!AIcharacterController.isGrounded)
         {
-            
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
             AIplayerVelocity = AIplayerJumpForce;
             AIanimator.SetTrigger("Jump");
@@ -180,6 +151,5 @@ public class AIPlayerController : MonoBehaviour
         }
         //AIplayerTurn =true;
         AIjump = true;
-        
     }
 }

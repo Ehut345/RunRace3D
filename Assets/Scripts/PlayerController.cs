@@ -8,8 +8,8 @@ public class PlayerController : MonoBehaviour
     CharacterController characterController;
 
     Vector3 playerMove;
-    [SerializeField] 
-    private  float speed;//playerSpeed
+    [SerializeField]
+    private float speed;//playerSpeed
     public float playerJumpForce;
     public float playerVelocity = 0;
     public float gravity;
@@ -20,32 +20,28 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-            characterController = GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
     }
 
     private void Start()
     {
-            
+
     }
 
-     void Update()
+    void Update()
     {
         playerMove = Vector3.zero;
         playerMove = transform.forward;
 
         if (characterController.isGrounded)
         {
-            
             wallSlide = false;
             playerVelocity = 0f;
-
-            if ( Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
             {
                 jump();
             }
-            
-            
             if (playerTurn)
             {
                 playerTurn = false;
@@ -62,21 +58,16 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            
             //print("wallslide");
             //gravity = 15f;
             playerVelocity -= gravity * Time.deltaTime * 0.5f;
         }
-
-
         animator.SetBool("Grounded", characterController.isGrounded);
         animator.SetBool("WallSlide", wallSlide);
-
         //else
         //{
         //    gravity = 30f;
         //    playerVelocity -= gravity * Time.deltaTime;
-
         //    //this logic is for double jump, will activate if required
         //    //if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && doubleJump)
         //    //{
@@ -85,38 +76,21 @@ public class PlayerController : MonoBehaviour
         //    //    doubleJump = false;
         //    //    print("DoubleJump!!");
         //    //}
-
-
         //}
-
-
         playerMove.Normalize();
-
         playerMove *= speed;
         playerMove.y = playerVelocity;
-
         characterController.Move(playerMove * Time.deltaTime);
     }
 
     private void jump()
     {
-
-
-        
-
-        
-        
-            animator.SetTrigger("Jump");
-           // wallSlide = false;
-            print("Jump!");
-            playerVelocity = playerJumpForce;
-            //doubleJump = true;
-            //transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
-        
-        
-
-
-        
+        animator.SetTrigger("Jump");
+        // wallSlide = false;
+        print("Jump!");
+        playerVelocity = playerJumpForce;
+        //doubleJump = true;
+        //transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -139,11 +113,7 @@ public class PlayerController : MonoBehaviour
                 //    doubleJump = false;
                 //    wallSlide = false;
                 //}
-
-
-
-                
-                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) // need to fix the logic according to our game progress
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) // need to fix the logic according to our game progress
                 {
                     //jump();
                     playerVelocity = playerJumpForce;
@@ -157,19 +127,12 @@ public class PlayerController : MonoBehaviour
                     print("Sliding");
                     wallSlide = true;
                 }
-
-
-
-
-
             }
         }
-
         //if (hit.collider.tag == "finish")
         //{
         //    print("Game Over!!");
         //}
-
         else
         {
             if (transform.forward != hit.collider.transform.right && hit.collider.tag == "Ground" && !playerTurn)
@@ -178,7 +141,5 @@ public class PlayerController : MonoBehaviour
                 print("Player restricted from turning");
             }
         }
-
-        
     }
 }

@@ -19,7 +19,6 @@ public class Finish : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         print(other.gameObject.name);
         if (other.gameObject.GetComponent<PlayerController>())
         {
